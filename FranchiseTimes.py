@@ -31,9 +31,7 @@ for offset in range(0, 400, 25):
 for i in range(0,len(url_list)):
     sales2 = "nd"
     url = url_list[i]
-    
-    #browser = start_firefox(url, headless=True)
-    
+       
     while True:
         time.sleep(i//2)
         browser = start_firefox(url, headless=True)
@@ -47,17 +45,19 @@ for i in range(0,len(url_list)):
             #print("loop recaptcha -> sleep ", str(i//2), " seconds")
             browser.close()
             browser.quit()
-            
-
-    #print(soup3)
 
     start = end = "hoverinfo"
     try:
         sales = re.search('hoverinfo(.*)hoverinfo', str(soup))
-        sales2 = re.findall(r'(\d{1,3}(,\d{3})+)+', str(sales.group(1)))
+        sales1 = sales.group(1)
+        sales2 = str(sales1)
+        sales3 = re.findall('(\[.*?\])+', sales2)
+        sales4 = sales3[1][1:-1]
+        sales5 = re.findall(r'([a-z]{1,4}|\d{1,3}(,\d{3})+)+', sales4)
+        #sales2 = re.findall(r'(\d{1,3}(,\d{3})+)+', str(sales.group(1)))
     except:
         pass
-
+    
     last_year_rank = soup2[soup2.find("Last Year Rank")+16:].split('|')[0]
     investment_range = soup2[soup2.find("Investment Range")+18:].split('|')[0]
     initial_investment = soup2[soup2.find("Initial Investment")+20:].split('|')[0]
@@ -69,11 +69,9 @@ for i in range(0,len(url_list)):
     sales_growth = soup2[soup2.find("Sales Growth %")+16:].split('|')[0]
     unit_growth = soup2[soup2.find("Unit Growth %")+15:].split('|')[0]
 
-
     soupero = str(soup.title.text)
     soupero_lista = soupero.split("|")
     soupero_lista = soupero_lista[0].split(".")
-
 
     print("Rank:", soupero_lista[0])
     print("Name:", soupero_lista[1][1:])
@@ -87,6 +85,7 @@ for i in range(0,len(url_list)):
     print("International Units:", international_units)
     print("Sales Growth:", sales_growth)
     print("Unit Growth:", unit_growth)
+    
     if sales2 == "nd":
         print("Sales 2016: no data")
         print("Sales 2017: no data")
@@ -94,11 +93,11 @@ for i in range(0,len(url_list)):
         print("Sales 2019: no data")
         print("Sales 2020: no data")
     else:
-        print("Sales 2016:", sales2[0][0])
-        print("Sales 2017:", sales2[1][0])
-        print("Sales 2018:", sales2[2][0])
-        print("Sales 2019:", sales2[3][0])
-        print("Sales 2020:", sales2[4][0])
+        print("Sales 2016:", sales5[0][0])
+        print("Sales 2017:", sales5[1][0])
+        print("Sales 2018:", sales5[2][0])
+        print("Sales 2019:", sales5[3][0])
+        print("Sales 2020:", sales5[4][0])
     print("")
     browser.close()
     browser.quit()
