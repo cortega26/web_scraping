@@ -1,6 +1,6 @@
-############################################################################################
-# this script will scrape information from of the 400 franchises in www.franchisetimes.com #
-############################################################################################
+################################################################################################
+# this script will scrape information from all of the 400 franchises in www.franchisetimes.com #
+################################################################################################
 
 from selenium import webdriver
 from helium import  *
