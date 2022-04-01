@@ -1,2 +1,2 @@
 # web_scraping
-Just scripts to scrape differente websites
+Just scripts to scrape websites
