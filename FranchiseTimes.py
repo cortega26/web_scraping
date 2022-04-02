@@ -29,22 +29,19 @@ for offset in range(0, 400, 25):
         url_list.append(item['url'])
 
 for i in range(0,len(url_list)):
-    sales2 = "nd"
+    #sales2 = "null"
     url = url_list[i]
        
     while True:
-        time.sleep(i//2)
+        time.sleep(2)
         browser = start_firefox(url, headless=True)
         soup = BeautifulSoup(browser.page_source, 'lxml')
         soup2 = soup.get_text("|", strip=True)
-        soup2 = str(soup2)
-        soup3 = str(soup)
-        if soup.title != None:
-            break
-        else:
-            #print("loop recaptcha -> sleep ", str(i//2), " seconds")
+        if soup.title == None:
             browser.close()
             browser.quit()
+        else:
+            break
 
     start = end = "hoverinfo"
     try:
@@ -54,10 +51,9 @@ for i in range(0,len(url_list)):
         sales3 = re.findall('(\[.*?\])+', sales2)
         sales4 = sales3[1][1:-1]
         sales5 = re.findall(r'([a-z]{1,4}|\d{1,3}(,\d{3})+)+', sales4)
-        #sales2 = re.findall(r'(\d{1,3}(,\d{3})+)+', str(sales.group(1)))
     except:
-        pass
-    
+        sales2 = "null"
+
     last_year_rank = soup2[soup2.find("Last Year Rank")+16:].split('|')[0]
     investment_range = soup2[soup2.find("Investment Range")+18:].split('|')[0]
     initial_investment = soup2[soup2.find("Initial Investment")+20:].split('|')[0]
@@ -69,15 +65,17 @@ for i in range(0,len(url_list)):
     sales_growth = soup2[soup2.find("Sales Growth %")+16:].split('|')[0]
     unit_growth = soup2[soup2.find("Unit Growth %")+15:].split('|')[0]
 
-    soupero = str(soup.title.text)
-    soupero_lista = soupero.split("|")
-    soupero_lista = soupero_lista[0].split(".")
+    rank_title = str(soup.title.text)
+    rank_title2 = rank_title.split("|")
+    rank = re.findall('\d{1,3}', rank_title2[0])
+    name = re.sub('\d{1,3}\.\ ', "", rank_title2[0])
+    
 
-    print("Rank:", soupero_lista[0])
-    print("Name:", soupero_lista[1][1:])
+    print("Rank:", rank[0])
+    print("Name:", name)
     print("Last Year Rank:", last_year_rank)
     print("Investment Range:", investment_range)
-    print("Inicial Investment:", initial_investment)
+    print("Initial Investment:", initial_investment)
     print("Category:", category)
     print("Company Description:", company_description)
     print("Global Sales:", global_sales)
@@ -85,13 +83,12 @@ for i in range(0,len(url_list)):
     print("International Units:", international_units)
     print("Sales Growth:", sales_growth)
     print("Unit Growth:", unit_growth)
-    
-    if sales2 == "nd":
-        print("Sales 2016: no data")
-        print("Sales 2017: no data")
-        print("Sales 2018: no data")
-        print("Sales 2019: no data")
-        print("Sales 2020: no data")
+    if sales2 == "null":
+        print("Sales 2016:", sales2)
+        print("Sales 2017:", sales2)
+        print("Sales 2018:", sales2)
+        print("Sales 2019:", sales2)
+        print("Sales 2020:", sales2)
     else:
         print("Sales 2016:", sales5[0][0])
         print("Sales 2017:", sales5[1][0])
