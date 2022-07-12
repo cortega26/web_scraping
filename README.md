@@ -1,2 +1,3 @@
-# web_scraping
-Just scripts to scrape websites
+# Web Scraping
+
+Scripts to scrape websites
